@@ -186,6 +186,7 @@ public class TaskTabView extends View {
         int textSelectedColor = typedArray.getColor(R.styleable.TaskTabView_text_selected_color, -1);
         int indicatorColor = typedArray.getColor(R.styleable.TaskTabView_indicator_color, -1);
         int indicatorSelectedColor = typedArray.getColor(R.styleable.TaskTabView_indicator_selected_color, -1);
+        typedArray.recycle();
         if(margin != -1) this.TC.margin = margin;
         if(itemPadding != -1) this.TC.itemPadding = itemPadding;
         if(textSize != -1) this.TC.textSize = textSize;
