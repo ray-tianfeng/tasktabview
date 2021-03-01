@@ -19,25 +19,39 @@ import android.widget.Scroller;
 import java.util.ArrayList;
 
 /**
+ * 伸缩式菜单栏
  * 根据宽度求高度
  * Time: 2021/2/23 0023
  * Author: zoulong
  */
 public class TaskTabView extends View {
+    //pageCount（总的页数，从0开始）、scrollDistanceX（当次在x轴上的滚动距离，按下-移动-抬起，这一次的距离）、alpha（透明度0-255）、shrinkHeight（收缩高度）
     private int pageCount, scrollDistanceX, alpha, shrinkHeight;
+    //view状态STATE_OPEN：打开、STATE_CLOSE：关闭（只显示一排的时候）、STATE_SHRINK（收缩/展开）
     private final int STATE_OPEN = 0x1, STATE_CLOSE = 0x2, STATE_SHRINK = 0x3;
     private int STATE = STATE_OPEN;
+    //滚动状态MOVE_X：x轴上滚动、MOVE_Y：y轴上滚动、MOVE_U（抬起）
     private final int MOVE_X = 0x1, MOVE_Y = 0x2, MOVE_U = 0x3;
     private int MOVE_STATE = MOVE_U;
+    //属性配置
     private TaskTabConfig TC;
+    //数据
     private ArrayList<TaskTab> tabs = new ArrayList<>();
+    //当前页面
     private int pageIndex;
     private Scroller mScroller;
+    //手势监听
     private GestureDetector mGestureDetector;
+    //收缩/展开动画
     ValueAnimator shrinkAnimation;
+    //item事件监控
     private ItemEventListener itemEventListener;
+    //iconPaint：icon画笔、circlePaint：圆圈背景画笔、strokePaint：圆圈边框背景画笔、describePaint：文字描述画笔、indicatorPaint：指示器画笔
     private Paint iconPaint, circlePaint, strokePaint, describePaint, indicatorPaint;
 
+    /**
+     * 初始化配置
+     */
     private void init(){
         iconPaint = new Paint();
         iconPaint.setAntiAlias(true);
@@ -69,14 +83,15 @@ public class TaskTabView extends View {
     private TaskOnGestureListener mTaskOnGestureListener = new TaskOnGestureListener(){
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            //确定滚动方向
             if(STATE == STATE_OPEN && MOVE_STATE == MOVE_U){
                 MOVE_STATE = Math.abs(distanceX) > Math.abs(distanceY) ? MOVE_X : MOVE_Y;
             }
-            if(MOVE_STATE == MOVE_X){
+            if(MOVE_STATE == MOVE_X){//x轴上滚动处理
                 scrollDistanceX += distanceX;
                 scrollBy((int) distanceX, 0);
                 postInvalidate();
-            }else{
+            }else{//y轴上收缩/展开
                 shrinkHeight += distanceY;
                 updateHeight();
             }
@@ -85,6 +100,7 @@ public class TaskTabView extends View {
 
         @Override
         public void onLongPress(MotionEvent e) {
+            //长安监听
             if(itemEventListener == null) return;
             int itemIndex = getItemIndexByPosition(e);
             if(itemIndex != -1) itemEventListener.onItemLongClick(itemIndex);
@@ -92,6 +108,7 @@ public class TaskTabView extends View {
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
+            //短暂按压时，更改按下item状态
             if(itemEventListener == null) return false;
             int itemIndex = getItemIndexByPosition(e);
             if(itemIndex != -1) tabs.get(itemIndex).isSelected = !tabs.get(itemIndex).isSelected;
@@ -100,6 +117,7 @@ public class TaskTabView extends View {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
+            //点击
             if(itemEventListener == null) return false;
             int itemIndex = getItemIndexByPosition(e);
             if(itemIndex != -1) itemEventListener.onItemOnClick(itemIndex);
@@ -109,6 +127,7 @@ public class TaskTabView extends View {
 
         @Override
         public void onEventUp() {
+            //当手指抬起来时，修正滚动和伸展/收缩值
             if(MOVE_STATE == MOVE_X){
                 if(Math.abs(scrollDistanceX) > TC.flipMinLimit){
                     pageIndex = scrollDistanceX > 0 ? Math.min(pageIndex + 1, pageCount) : Math.max(pageIndex - 1, 0);
@@ -146,6 +165,9 @@ public class TaskTabView extends View {
         init();
     }
 
+    /**
+     * 解析自定义属性
+     */
     private void parseAttribute(Context context, AttributeSet attrs){
         this.TC = new TaskTabConfig(context);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TaskTabView);
@@ -182,10 +204,12 @@ public class TaskTabView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if(!TC.isQuantization()){
+        if(!TC.isQuantization()){//未设置初始值时，需要配置初始值
             int widthMode = MeasureSpec.getMode(widthMeasureSpec);
             int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-            if(widthMode == MeasureSpec.UNSPECIFIED) throw new RuntimeException("控件需要宽度的精确值，用于初始化view的值");
+            int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+            if(heightMode != MeasureSpec.AT_MOST) throw new RuntimeException("不可以指定控件高度，高度需要计算");
+            if(widthMode == MeasureSpec.AT_MOST) throw new RuntimeException("控件需要宽度的精确值，用于计算view的高度");
             this.TC.itemSize = (widthSize - TC.margin * 2) / 7;
             this.TC.itemIntervalX = (widthSize - TC.margin * 2 - TC.itemSize * 4) / 3;
             this.TC.itemIntervalY = (widthSize - TC.margin * 2 - TC.itemSize * 4) / 3;
@@ -200,9 +224,11 @@ public class TaskTabView extends View {
             this.TC.viewWidth = widthSize;
         }
         setMeasuredDimension(this.TC.viewWidth, this.TC.viewHeight - shrinkHeight);
+        //根据伸缩值计算透明度
         alpha = 255 - (int) (shrinkHeight / (TC.shrinkMaxLimit * 1f) * 255);
         if(shrinkHeight == 0) STATE = STATE_OPEN;
         else if(shrinkHeight == TC.shrinkMaxLimit) {
+            //状态为关闭时需要滚动第一页
             pageIndex = 0;
             STATE = STATE_CLOSE;
             scrollTo(0, 0);
@@ -210,8 +236,12 @@ public class TaskTabView extends View {
 
     }
 
-   public void measureItemPosition(){
+    /**
+     * 计算item的位置
+     */
+    public void measureItemPosition(){
        for(int i = 0; i < tabs.size(); i ++){
+           //展开正常情况下view的位置和透明度
            TaskTab taskTab = tabs.get(i);
            int index = i % 12;
            taskTab.iconPoint.x = (TC.itemSize + TC.itemIntervalX) * (index % 4) + TC.margin +  i / 12 * TC.viewWidth;
@@ -220,36 +250,36 @@ public class TaskTabView extends View {
            taskTab.describePoint.x = taskTab.iconPoint.x;
            taskTab.describeAlpha = 255;
            taskTab.iconAlpha = 255;
+           //关闭状态或者展开/收缩状态
            if(STATE != STATE_OPEN){
+               //如果就在第一页，并且当前item页面==0
                if(pageIndex == 0 && pageIndex == taskTab.page){
-                   if(index < 4){
-                       if(index > 0){
-                           taskTab.iconPoint.x = (int) (taskTab.iconPoint.x - TC.itemISRatio * shrinkHeight * index);
-                       }
+                   if(index < 4){//第一页第一排需要描述向左下方运动
+                       taskTab.iconPoint.x = (int) (taskTab.iconPoint.x - TC.itemISRatio * shrinkHeight * index);
                        taskTab.describeAlpha = alpha;
                        taskTab.describePoint.x = taskTab.describePoint.x - shrinkHeight;
                        taskTab.describePoint.y = taskTab.iconPoint.y + TC.itemSize + TC.textInterval + shrinkHeight;
-                   }else{
+                   }else{//整体下移
                        taskTab.describeAlpha = alpha;
                        taskTab.iconAlpha = alpha;
                        taskTab.iconPoint.y =  taskTab.iconPoint.y + shrinkHeight;
                        taskTab.describePoint.y = taskTab.iconPoint.y + TC.itemSize + TC.textInterval;
                    }
-               }else if(pageIndex == taskTab.page){
+               }else if(pageIndex == taskTab.page){//没在第一页整体下移
                    taskTab.describeAlpha = alpha;
                    taskTab.iconAlpha = alpha;
                    taskTab.iconPoint.y =  taskTab.iconPoint.y + shrinkHeight;
                    taskTab.describePoint.y = taskTab.iconPoint.y + TC.itemSize + TC.textInterval;
                }
            }
-           if(alpha < 100){
-               if(i == 4 && pageIndex == 0 && pageIndex == taskTab.page){
+           if(alpha < 100){//透明度小于100时
+               if(i == 4 && pageIndex == 0 && pageIndex == taskTab.page){//当item是第4个并且在第一页
                    taskTab.iconPoint.x = (int) ((TC.itemSize + TC.itemIntervalX) * 4 + TC.margin - TC.itemISRatio * shrinkHeight * 4);
                    taskTab.iconPoint.y = TC.margin;
                    taskTab.describeAlpha = 255 - alpha;
                    taskTab.iconAlpha = 255 - alpha;
                }else if(pageIndex > 0){
-                   if(i < 5){
+                   if(i < 5){//第一页的5个item显示在当前第一页第一排
                        taskTab.iconPoint.x = (TC.itemSize + TC.itemShrinkIntervalX) * i + TC.margin +  pageIndex * TC.viewWidth;
                        taskTab.iconPoint.y = TC.margin;
                        taskTab.describeAlpha = 255 - alpha;
@@ -260,6 +290,9 @@ public class TaskTabView extends View {
        }
    }
 
+    /**
+     * 更新通过临界值更新view高度
+     */
     private void updateHeight(){
         if(shrinkHeight >= TC.shrinkMaxLimit) this.shrinkHeight = TC.shrinkMaxLimit;
         else if(shrinkHeight <= 0) this.shrinkHeight = 0;
@@ -269,10 +302,15 @@ public class TaskTabView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        //计算item位置
         measureItemPosition();
+        //根据页面返回需要画的item
         ArrayList<TaskTab> showTab = getShowTabByPage();
+        //画icon
         drawIcon(canvas, showTab);
+        //画描述
         drawDescribe(canvas, showTab);
+        //画指示器
         drawIndicator(canvas);
     }
 

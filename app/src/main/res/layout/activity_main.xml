@@ -19,8 +19,17 @@
         app:margin = "15dp"
         app:item_padding="10dp"
         app:text_size="12sp"
+        app:text_interval="10dp"
+        app:indicator_interval="8dp"
+        app:indicator_margin_buttom="10dp"
+        app:indicator_radius="2dp"
+        app:circle_color="#d9dfe2"
+        app:circle_selected_color="#0099ff"
         app:circle_border_color="#b0b5b7"
+        app:text_color="#464849"
         app:text_selected_color="@android:color/black"
+        app:indicator_color="#bec3c4"
+        app:indicator_selected_color="#474949"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

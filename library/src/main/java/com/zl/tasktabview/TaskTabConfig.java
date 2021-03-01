@@ -66,4 +66,62 @@ public class TaskTabConfig {
     boolean isQuantization(){
         return viewWidth != 0 &&  viewHeight != 0;
     }
+
+    public void setMargin(int margin) {
+        this.margin = margin;
+    }
+
+    public void setItemPadding(int itemPadding) {
+        this.itemPadding = itemPadding;
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
+
+    public void setTextInterval(int textInterval) {
+        this.textInterval = textInterval;
+    }
+
+    public void setIndicatorInterval(int indicatorInterval) {
+        this.indicatorInterval = indicatorInterval;
+    }
+
+    public void setIndicatorMB(int indicatorMB) {
+        this.indicatorMB = indicatorMB;
+    }
+
+    public void setIndicatorRadius(int indicatorRadius) {
+        this.indicatorRadius = indicatorRadius;
+    }
+
+    public void setCircleColor(int circleColor) {
+        this.circleColor = circleColor;
+    }
+
+    public void setCircleBorderColor(int circleBorderColor) {
+        this.circleBorderColor = circleBorderColor;
+    }
+
+    public void setCircleSelectedColor(int circleSelectedColor) {
+        this.circleSelectedColor = circleSelectedColor;
+    }
+
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
+    }
+
+    public void setTextSelectedColor(int textSelectedColor) {
+        this.textSelectedColor = textSelectedColor;
+    }
+
+    public void setIndicatorColor(int indicatorColor) {
+        this.indicatorColor = indicatorColor;
+    }
+
+    public void setIndicatorSelectedColor(int indicatorSelectedColor) {
+        this.indicatorSelectedColor = indicatorSelectedColor;
+    }
+
+
 }

@@ -6,6 +6,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.zl.tasktabview.ItemEventListener;
+import com.zl.tasktabview.TaskTabConfig;
 import com.zl.tasktabview.TaskTabView;
 
 public class MainActivity extends AppCompatActivity {
@@ -59,6 +60,5 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "长按：" + itemIndex, Toast.LENGTH_SHORT).show();
             }
         });
-//        taskTabView.config(new TaskTabConfig(this));
     }
 }
