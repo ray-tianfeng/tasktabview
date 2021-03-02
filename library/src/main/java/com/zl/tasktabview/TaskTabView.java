@@ -226,7 +226,7 @@ public class TaskTabView extends View {
         }
         setMeasuredDimension(this.TC.viewWidth, this.TC.viewHeight - shrinkHeight);
         //根据伸缩值计算透明度
-        alpha = 255 - (int) (shrinkHeight / (TC.shrinkMaxLimit * 1f) * 255);
+        alpha = 255 - (int) ((shrinkHeight * 1f) / (TC.shrinkMaxLimit * 1f) * 255);
         if(shrinkHeight == 0) STATE = STATE_OPEN;
         else if(shrinkHeight == TC.shrinkMaxLimit) {
             //状态为关闭时需要滚动第一页
@@ -333,11 +333,11 @@ public class TaskTabView extends View {
 
     private void drawDescribe(Canvas canvas,  ArrayList<TaskTab> showTab) {
         for(TaskTab taskTab : showTab){
-            describePaint.setAlpha(taskTab.describeAlpha);
             Rect bounds = new Rect();
             describePaint.getTextBounds(taskTab.describe, 0, taskTab.describe.length(), bounds);
             float offSet=(bounds.top+bounds.bottom) / 2;
             describePaint.setColor(taskTab.isSelected ? TC.textSelectedColor : TC.textColor);
+            describePaint.setAlpha(taskTab.describeAlpha);
             canvas.drawText(taskTab.describe, taskTab.describePoint.x + (TC.itemSize - bounds.width()) / 2, taskTab.describePoint.y -offSet, describePaint);
         }
     }
