@@ -1,7 +1,7 @@
 高仿了一个小米状状态的伸缩式菜单栏
-小米：![ezgif-4-745c4fd37592.gif](https://github.com/ray-tianfeng/tasktabview/blob/master/gif/ezgif-4-745c4fd37592.gif)
-仿制：![ezgif-4-b56cab2f6afa.gif](https://github.com/ray-tianfeng/tasktabview/blob/master/gif/ezgif-4-b56cab2f6afa.gi)
-主要功能点，横向滚动纵向收缩，横向滚动联代底部指示器变化，纵向收缩时，随着收缩距离动态的改变透明度，当下面两排itemview收缩完成后第五个item移动到第一排。最后是点击后记录状态，改变item背景、图标、描述颜色。
+小米：![ezgif-4-745c4fd37592.gif](https://github.com/ray-tianfeng/tasktabview/blob/master/gif/ezgif-4-745c4fd37592.gif)  
+仿制：![ezgif-4-b56cab2f6afa.gif](https://github.com/ray-tianfeng/tasktabview/blob/master/gif/ezgif-4-b56cab2f6afa.gif)  
+主要功能点，横向滚动纵向收缩，横向滚动联代底部指示器变化，纵向收缩时，随着收缩距离动态的改变透明度，当下面两排itemview收缩完成后第五个item移动到第一排。最后是点击后记录状态，改变item背景、图标、描述颜色。  
 
 ## 导入
 1. 中央厂库配置
