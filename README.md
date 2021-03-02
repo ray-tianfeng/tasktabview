@@ -87,5 +87,5 @@ allprojects {
         app:indicator_selected_color="#474949"
         />
 ~~~
-代码设置优先级高于布局中，控件宽度必须指明不能“wrap_content”，高度是通过宽度计算出来的，设置宽度值无效。
+代码设置优先级高于布局中，控件宽度必须指明不能“wrap_content”，高度是通过宽度计算出来的，所以必须设置为“wrap_content”。
 [代码传送门](https://github.com/ray-tianfeng/tasktabview)
