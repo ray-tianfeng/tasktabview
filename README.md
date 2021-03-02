@@ -35,22 +35,23 @@ allprojects {
         });
 ~~~
 ##属性
-|字段|布局中设置| 代码中设置 | 说明|
-|--------|:-----| :----|:----|
-|margin|app:margin|TaskTabConfig.setMargin|item距离top、left、right间距，底部没有用margin作为间距|
-|itemPadding|app:item_padding|TaskTabConfig.setItemPadding|icon到外部圆圈的间距|
-|textSize|app:text_size|TaskTabConfig.setTextSize|图标下部描述文字大小|
-|textInterval|app:text_interval|TaskTabConfig.setTextInterval|描述文字和图标间的间距|
-|indicatorInterval|app:indicator_interval|TaskTabConfig.setIndicatorInterval|指示器间的间距|
-|indicatorMB|app:indicator_margin_buttom|TaskTabConfig.setIndicatorMB|指示器和底部的间距|
-|indicatorRadius|app:indicator_radius|TaskTabConfig.setIndicatorRadius|指示器半径，指示器用画实心圆实现的|
-|circleColor|app:circle_color|TaskTabConfig.setCircleColor|item背景圆圈的颜色|
-|circleSelectedColor|app:circle_selected_color|TaskTabConfig.setCircleSelectedColor|item背景圆圈选中/点击时的颜色|
-|circleBorderColor|app:circle_border_color|TaskTabConfig.setCircleBorderColor|item背景圆圈边框的颜色|
-|textColor|app:text_color|TaskTabConfig.setTextColor|描述文字颜色|
-|textSelectedColor|app:text_selected_color|TaskTabConfig.setTextSelectedColor|描述选中/点击时文字颜色|
-|indicatorColor|app:indicator_color|TaskTabConfig.setIndicatorColor|指示器颜色|
-|indicatorSelectedColor|app:indicator_selected_color|TaskTabConfig.setIndicatorSelectedColor|指示器高亮时指示器颜色|
+| 字段                    | 布局中设置                    | 代码中设置                                | 说明                                              |
+|:-----------------------|:-----------------------------|:----------------------------------------|:--------------------------------------------------|
+| margin                 | app:margin                   | TaskTabConfig.setMargin                 | item距离top、left、right间距，底部没有用margin作为间距 |
+| itemPadding            | app:item_padding             | TaskTabConfig.setItemPadding            | icon到外部圆圈的间距                                |
+| textSize               | app:text_size                | TaskTabConfig.setTextSize               | 图标下部描述文字大小                                 |
+| textInterval           | app:text_interval            | TaskTabConfig.setTextInterval           | 描述文字和图标间的间距                               |
+| indicatorInterval      | app:indicator_interval       | TaskTabConfig.setIndicatorInterval      | 指示器间的间距                                      |
+| indicatorMB            | app:indicator_margin_buttom  | TaskTabConfig.setIndicatorMB            | 指示器和底部的间距                                   |
+| indicatorRadius        | app:indicator_radius         | TaskTabConfig.setIndicatorRadius        | 指示器半径，指示器用画实心圆实现的                     |
+| circleColor            | app:circle_color             | TaskTabConfig.setCircleColor            | item背景圆圈的颜色                                  |
+| circleSelectedColor    | app:circle_selected_color    | TaskTabConfig.setCircleSelectedColor    | item背景圆圈选中/点击时的颜色                         |
+| circleBorderColor      | app:circle_border_color      | TaskTabConfig.setCircleBorderColor      | item背景圆圈边框的颜色                               |
+| textColor              | app:text_color               | TaskTabConfig.setTextColor              | 描述文字颜色                                        |
+| textSelectedColor      | app:text_selected_color      | TaskTabConfig.setTextSelectedColor      | 描述选中/点击时文字颜色                              |
+| indicatorColor         | app:indicator_color          | TaskTabConfig.setIndicatorColor         | 指示器颜色                                         |
+| indicatorSelectedColor | app:indicator_selected_color | TaskTabConfig.setIndicatorSelectedColor | 指示器高亮时指示器颜色                               |
+
 代码中设置配置：
 ~~~java
         TaskTabConfig taskTabConfig = new TaskTabConfig(this);
